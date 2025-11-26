@@ -1,6 +1,13 @@
 services:
-  - type: web
+  - type: static
     name: ecurefund
     env: static
-    buildCommand: ""
+    buildCommand: npm install
     staticPublishPath: .
+    headers:
+      - path: /*
+        name: X-Frame-Options
+        value: DENY
+      - path: /*
+        name: X-Content-Type-Options
+        value: nosniff
